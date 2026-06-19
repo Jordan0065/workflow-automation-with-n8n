@@ -1,0 +1,313 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hello! I am your Customer Support chatbot! Ask me a few questions. I am trained on a specific catalog.",
+        "options": {
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -400,
+        0
+      ],
+      "id": "1d17bd61-1867-4e9f-8ff1-dfc968e3129c",
+      "name": "When chat message received",
+      "webhookId": "76135959-05d7-4e7d-84c1-fa77ce102160"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "2ee3948e-516b-4a95-be8d-f9c1d200410d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        224
+      ],
+      "id": "68e8f60c-b56c-43ab-92d3-78c73962aca5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "3KP25UpxZQFjVIS4",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1TRieRrJaSAKSn66GwSKKMzWGSHgky8N6SsE8llic4zU",
+          "mode": "list",
+          "cachedResultName": "product-catalog",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TRieRrJaSAKSn66GwSKKMzWGSHgky8N6SsE8llic4zU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 370113965,
+          "mode": "list",
+          "cachedResultName": "product-catalog",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TRieRrJaSAKSn66GwSKKMzWGSHgky8N6SsE8llic4zU/edit#gid=370113965"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        48,
+        224
+      ],
+      "id": "36bcd212-2d47-441f-a3f2-603798148ed0",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "6cAlbS5ltj4rbkJg",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        0
+      ],
+      "id": "272b2d46-d219-4015-b180-a2a5ba249e65",
+      "name": "Chat",
+      "webhookId": "c29600a5-99d4-431c-935b-cc4a8ff2d287"
+    },
+    {
+      "parameters": {
+        "promptType": "=You are a data extraction assistant.\n\nAnalyze the Customer service reply and identify all products that are explicitly described as unavailable.\n\nTreat the following phrases as unavailable:\n- out of stock\n- sold out\n- currently unavailable\n- no stock\n- not available\n\nDo not include products that are described as:\n- in stock\n- available\n- available now\n- currently available\n\nOnly include products that are explicitly mentioned in the Customer service reply.\n\nFor each unavailable product, output:\n\nproduct name, SKU, Price\n\nSeparate fields with commas.\nOutput one product per line.\nDo not include headers, explanations, or additional text.\n\nIf no products are unavailable, output an empty string.\n\nUser message:\n{{ $('When chat message received').item.json.chatInput }}\n\nCustomer service reply:\n{{ $('AI Agent').item.json.output }}",
+        "text": "",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        160
+      ],
+      "id": "668d58f7-81fc-48e1-a76c-3796cdff8978",
+      "name": "AI Agent1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        352
+      ],
+      "id": "d2c50788-687b-491d-90a7-fd0291197c3d",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "3KP25UpxZQFjVIS4",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a7798958-1336-46ef-8738-4c5c77285bd0",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        496,
+        160
+      ],
+      "id": "d23fe468-827a-44a2-9ef4-aaeefd95b2bd",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "angelinajo0065@gmail.com",
+        "subject": "Products out of Stock!",
+        "message": "=The following Products are out of stock:\n\n\n{{ $('AI Agent').item.json.output }}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        704,
+        64
+      ],
+      "id": "c28f27b2-0933-4227-98b1-919ca2dd0e7e",
+      "name": "Send a message",
+      "webhookId": "4d9edd78-e8c5-4e6a-8360-9cde8da792db",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AxPAJqwRL8B7aoL6",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Chat",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "7ec9148c-ec23-4b06-b8ca-f1222ad0a5c6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "27b8e82ef37228c1ae1a55fd3046f2c0e8ba3b2fefc2e1c99ee8cb6b33982b8e"
+  },
+  "nodeGroups": [],
+  "id": "6CYaRuOZJapXctbH",
+  "tags": []
+}
