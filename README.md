@@ -1,86 +1,48 @@
+# AI Customer Support Chatbot with Product Catalog Lookup (n8n)
 
-# n8n Automation Workflow Project
+This project is an **AI-powered customer support chatbot** built using **n8n**, **OpenAI GPT‑5 Mini**, and **Google Sheets**.  
+It allows customers to ask natural-language questions about products, pricing, SKUs, and availability — and receive instant, accurate responses based on a live product catalog stored in Google Sheets.
 
-## Overview
-This repository contains a single **n8n workflow** exported as JSON.  
-The goal of this project is to demonstrate practical automation skills using n8n, API integrations, and low‑code workflow design.  
-
-The workflow can be imported into any n8n instance and adapted for personal, educational, or production use.
+The workflow also includes an optional **inventory monitoring system** that detects out-of-stock products mentioned in AI responses and automatically sends email alerts to inventory managers.
 
 ---
 
-## What This Workflow Does
-> Replace this section with a short description of your workflow’s purpose.
+# Features
 
-Examples:
-- Automates notifications when new data is received  
-- Syncs information between two platforms  
-- Processes incoming data and sends it to another service  
-- Cleans, transforms, or enriches data before output  
-
----
-
-## Repository Structure
----
-
-## ⚙️ How to Import the Workflow
-
-### 1. Open n8n
-Log into your n8n instance (self‑hosted or cloud).
-
-### 2. Import the JSON
-- Go to **Workflows**
-- Click **Import**
-- Upload the file from `/workflows/my-workflow.json`
-
-### 3. Configure Credentials
-Depending on your workflow, you may need to set up:
-- API keys  
-- OAuth connections  
-- Webhooks  
-- Database credentials  
-
-n8n will prompt you for any missing credentials when you run the workflow.
-
-### 4. Execute the Workflow
-Once imported and configured:
-- Click **Execute Workflow**
-- Review node outputs
-- Adjust logic as needed
+- AI-powered customer support assistant  
+- Real-time product lookup via Google Sheets  
+- Natural language conversations using GPT‑5 Mini  
+- Automated customer responses  
+- SKU, price, and availability retrieval  
+- Optional out-of-stock detection  
+- Automated Gmail notifications  
+- Fully customizable no-code workflow in n8n  
 
 ---
 
-## Tools & Technologies
-- **n8n** (workflow automation)
-- **JavaScript Function nodes** (if used)
-- **API integrations** (REST, OAuth, or service‑specific)
-- **Webhooks** (if applicable)
+# Workflow Architecture
 
----
+```text
+Customer Message
+       │
+       ▼
+Chat Trigger
+       │
+       ▼
+AI Agent
+       │
+ ┌─────┴─────┐
+ ▼           ▼
+Chat      Stock Analysis Agent (Optional)
+                 │
+                 ▼
+                IF
+                 │
+                 ▼
+            Gmail Alert
 
-## Workflow Diagram (Optional)
-Add a screenshot of your workflow here for visual clarity.
-
-Example:
 
 
----
-
-## Why This Project Matters
-This project demonstrates:
-- Real‑world automation design  
-- Ability to integrate multiple systems  
-- Understanding of workflow logic and error handling  
-- Practical use of n8n as an orchestration tool  
-- Clean documentation and version control practices  
-
----
-
-## 🚀 Future Enhancements
-- Add error‑handling branches  
-- Add retry logic  
-- Add logging or notifications  
-- Expand workflow to support more systems  
 
 
 
